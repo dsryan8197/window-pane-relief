@@ -119,7 +119,6 @@ If ⌃⌥P does nothing, another app may already use that shortcut. The output t
 
 ## Known limitations
 
-- Untested on a real Mac so far, so the first build may need small fixes.
 - The first click on the pinned window is passed on as a plain click. To drag something in
   it (or the window itself), click once, then drag.
 - When the copy is showing, it's a picture: hovering over it doesn't highlight anything
