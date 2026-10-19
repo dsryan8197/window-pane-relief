@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Builds "build/Window Pane Relief.app" and installs it in /Applications.
+# ./scripts/build-app.sh dist  also makes dist/WindowPaneRelief.dmg to share.
 # Calls swiftc directly instead of `swift build`, so it still works when the Command Line
 # Tools' package manager is broken ("Invalid manifest" / PackageDescription link errors).
 set -euo pipefail
@@ -7,17 +8,23 @@ cd "$(dirname "$0")/.."
 
 APP="build/Window Pane Relief.app"
 rm -rf "$APP"
-mkdir -p "$APP/Contents/MacOS"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 
-swiftc -O \
-    -framework AppKit \
-    -framework ApplicationServices \
-    -framework Carbon \
-    -framework ScreenCaptureKit \
-    Sources/WindowPin/*.swift \
-    -o "$APP/Contents/MacOS/WindowPaneRelief"
+# Universal binary: Apple Silicon + Intel Macs.
+for arch in arm64 x86_64; do
+    swiftc -O -target $arch-apple-macos13 \
+        -framework AppKit \
+        -framework ApplicationServices \
+        -framework Carbon \
+        -framework ScreenCaptureKit \
+        Sources/WindowPin/*.swift \
+        -o "build/WindowPaneRelief-$arch"
+done
+lipo -create build/WindowPaneRelief-arm64 build/WindowPaneRelief-x86_64 -output "$APP/Contents/MacOS/WindowPaneRelief"
+rm build/WindowPaneRelief-arm64 build/WindowPaneRelief-x86_64
 
 cp Resources/Info.plist "$APP/Contents/Info.plist"
+cp AppIcon.icns "$APP/Contents/Resources/"
 # Sign with the same local certificate every time so macOS keeps Screen Recording and Accessibility
 # across rebuilds. (Falls back to ad-hoc signing on a Mac without it; then they must be re-granted.)
 if security find-certificate -c "Daniel Ryan Local Signing" >/dev/null 2>&1; then
@@ -27,6 +34,18 @@ else
 fi
 
 echo "Built $APP"
+
+if [[ "${1:-}" == "dist" ]]; then
+  rm -rf dist && mkdir -p dist/stage
+  cp -R "$APP" dist/stage/
+  ln -s /Applications dist/stage/Applications
+  hdiutil create -volname "Window Pane Relief" -srcfolder dist/stage -ov -format UDZO dist/WindowPaneRelief.dmg >/dev/null
+  rm -rf dist/stage
+  echo "Made dist/WindowPaneRelief.dmg"
+fi
+
+# On GitHub's build machines (CI is set there), stop here: the DMG is what gets published.
+[[ -n "${CI:-}" ]] && exit 0
 
 # Replace any installed copy, quitting it first if it's running.
 pkill -x WindowPaneRelief 2>/dev/null && sleep 1 || true

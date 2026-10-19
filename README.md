@@ -15,22 +15,33 @@ click and type in both.
 - **One shortcut.** Press **⌃⌥P** (Control-Option-P) to pin the window you're looking at.
   Press it again in that window to unpin it.
 
-## Requirements
+## ⬇️ [Download Window Pane Relief for Mac](https://github.com/hi-dad/window-pane-relief/releases/latest/download/WindowPaneRelief.dmg)
 
-- macOS 13 or later
-- Swift 5.9 or later (install Xcode, or run `xcode-select --install` for the command line tools)
+Needs macOS 13 or newer. Works on Apple Silicon and Intel Macs. This link always gets the newest version.
 
-## Try it
+## Install
 
-From this folder, in Terminal:
+1. Open the downloaded **WindowPaneRelief.dmg**.
+2. Drag **Window Pane Relief** onto the **Applications** folder in that window. (Don't open it from inside this window.)
+3. Open **Applications** and double-click **Window Pane Relief**.
 
-```sh
-./scripts/build-app.sh
-```
+### The first time you open it
 
-This builds the app, puts it in your Applications folder and opens it. From then on, open
-**Window Pane Relief** from Applications, Launchpad or Spotlight like any other app. To start it
-automatically, add it in System Settings → General → Login Items.
+Your Mac will say it can't verify the app. That's normal for apps that aren't from the App Store, and you only need to do this once.
+
+1. Click **Done**. Don't click Move to Trash.
+2. Open **System Settings**, click **Privacy & Security**, scroll down, and click **Open Anyway** next to Window Pane Relief. Enter your Mac password if asked.
+3. Click **Open** on the last prompt. From now on Window Pane Relief opens normally.
+
+If you don't see **Open Anyway**, try opening Window Pane Relief once more, then go straight back to Privacy & Security. The button only appears for about an hour after the app is blocked.
+
+**To update:** download again and replace the copy in Applications. Your settings stay.
+
+**To uninstall:** pin icon → **Quit Window Pane Relief**, then drag Window Pane Relief from Applications to the Trash.
+
+To start it automatically, add it in System Settings → General → Login Items.
+
+### Permissions
 
 The first time, macOS asks for two permissions:
 
@@ -78,9 +89,16 @@ sudo rm -rf /Library/Developer/CommandLineTools
 xcode-select --install
 ```
 
-## Rebuilding
+## Build it yourself
 
-Run `./scripts/build-app.sh` again. It quits the running copy, replaces the one in
+Needs macOS 13 or later and Swift 5.9 or later (install Xcode, or run `xcode-select --install` for the command line tools). From this folder, in Terminal:
+
+```sh
+./scripts/build-app.sh        # builds, installs to /Applications and opens it
+./scripts/build-app.sh dist   # also makes dist/WindowPaneRelief.dmg
+```
+
+To rebuild, run `./scripts/build-app.sh` again. It quits the running copy, replaces the one in
 Applications and opens the new one. The build is signed only for this Mac, so after a rebuild macOS may treat it as a new app.
 If the pinned window stops showing or clicks stop going through, remove Window Pane Relief from the
 Screen Recording and Accessibility lists in System Settings → Privacy & Security and allow
