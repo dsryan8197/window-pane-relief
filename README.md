@@ -1,5 +1,7 @@
 # Window Pane Relief
 
+<img src="images/icon.png" alt="Window Pane Relief app icon" width="128">
+
 *Formerly Window Pin.*
 
 A small Mac menu bar app for when you keep switching between two windows. Pin a window and
