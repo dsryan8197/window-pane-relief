@@ -2,130 +2,41 @@
 
 <img src="images/icon.png" alt="Window Pane Relief app icon" width="128">
 
-*Formerly Window Pin.*
+**A tiny Mac menu bar app: pin any window on top of everything, and keep working in both.**
 
-A small Mac menu bar app for when you keep switching between two windows. Pin a window and
-it stays on top of everything, so you can keep a small window over a big one and still
-click and type in both.
+<img src="images/demo.gif" alt="Window Pane Relief: a pinned browser window stays on top while text is typed into the app behind it; Control-Option-P pins the window" width="720">
 
-- **Size it how you like.** Make the window you want to pin small and put it where you want
-  it, then pin it.
-- **Stays on top.** When you click into another window, the pinned one stays visible above
-  it, still live.
-- **Still usable.** Click the pinned window and you're working in it again. Type, scroll,
-  click buttons. Click back into the big window and the pinned one stays on top.
-- **One shortcut.** Press **⌃⌥P** (Control-Option-P) to pin the window you're looking at.
-  Press it again in that window to unpin it.
-
-## ⬇️ [Download Window Pane Relief for Mac](https://github.com/hi-dad/window-pane-relief/releases/latest/download/WindowPaneRelief.dmg)
-
-Needs macOS 13 or newer. Works on Apple Silicon and Intel Macs. This link always gets the newest version.
+### [⬇️ Download Window Pane Relief](https://github.com/hi-dad/window-pane-relief/releases/latest/download/WindowPaneRelief.dmg)
+Free · macOS 13 or newer · always the latest version
 
 ## Install
 
-1. Open the downloaded **WindowPaneRelief.dmg**.
-2. Drag **Window Pane Relief** onto the **Applications** folder in that window. (Don't open it from inside this window.)
-3. Open **Applications** and double-click **Window Pane Relief**.
+1. Open **WindowPaneRelief.dmg** and drag the app into **Applications**.
+2. Open it. When macOS says it can't verify the app, click **Done**, then go to **System Settings → Privacy & Security** and click **Open Anyway** (once).
+3. Allow **Screen Recording** and **Accessibility** when asked, then quit and reopen it.
 
-### The first time you open it
+## How to use it
 
-Your Mac will say it can't verify the app. That's normal for apps that aren't from the App Store, and you only need to do this once.
+- Make the window you want small and put it where you like.
+- Press **⌃⌥P** (or pick it from the pin icon in the menu bar) to pin it.
+- Click into your big window and work as usual. The pinned one stays on top, and clicking it puts you straight back in it.
+- Press **⌃⌥P** again, or right-click the pinned window, to unpin.
 
-1. Click **Done**. Don't click Move to Trash.
-2. Open **System Settings**, click **Privacy & Security**, scroll down, and click **Open Anyway** next to Window Pane Relief. Enter your Mac password if asked.
-3. Click **Open** on the last prompt. From now on Window Pane Relief opens normally.
+Good to know: both windows need to be on the same desktop (not full screen). To drag inside the pinned window, click it once first.
 
-If you don't see **Open Anyway**, try opening Window Pane Relief once more, then go straight back to Privacy & Security. The button only appears for about an hour after the app is blocked.
+**Update:** download again and replace the app. **Remove:** pin icon → **Quit**, then drag it to the Trash.
 
-**To update:** download again and replace the copy in Applications. Your settings stay.
+<details><summary>Build it yourself</summary>
 
-**To uninstall:** pin icon → **Quit Window Pane Relief**, then drag Window Pane Relief from Applications to the Trash.
+Needs Xcode or the Command Line Tools.
 
-To start it automatically, add it in System Settings → General → Login Items.
-
-### Permissions
-
-The first time, macOS asks for two permissions:
-
-1. **Screen Recording**, to show the pinned window while another window is in front.
-   Nothing is recorded or saved.
-2. **Accessibility**, to bring the pinned window forward and pass your click on to it.
-
-After allowing both, quit Window Pane Relief from its menu bar icon and open it again.
-
-A pin icon appears in the menu bar.
-
-## Using it
-
-1. Resize the window you want to keep on top and move it where you want it.
-2. Click the pin icon and choose that window, or press **⌃⌥P** while it's in front.
-3. Click into your big window and work as usual. The pinned window stays on top.
-4. Click the pinned window to use it. Your click goes through to it, and you can type in it
-   right away.
-
-Right-click the pinned window while it's covering another one to change its opacity or
-unpin it. You can also unpin from the menu bar list, or with ⌃⌥P. You can pin several
-windows at once. A pin goes away when its window closes.
-
-### How it works
-
-macOS doesn't let one app keep another app's real window on top. So while the pinned window
-is behind other windows, Window Pane Relief lays a live copy of it exactly over it, at the same
-size and position. When you click the copy, the copy hides, the real window comes forward,
-and the click is passed on to it. When you click another window, the copy covers it again.
-
-The copy updates up to 30 times a second and follows the window when you move or resize it.
-
-### Running from Terminal with debug output
-
-```sh
-swift run WindowPin --debug
-```
-
-The permissions then belong to Terminal instead of Window Pane Relief. If this fails with "Invalid
-manifest", that's a problem with the Command Line Tools' package manager, not with this
-app; use the build script above instead. To fix the tools themselves, reinstall them:
-
-```sh
-sudo rm -rf /Library/Developer/CommandLineTools
-xcode-select --install
-```
-
-## Build it yourself
-
-Needs macOS 13 or later and Swift 5.9 or later (install Xcode, or run `xcode-select --install` for the command line tools). From this folder, in Terminal:
-
-```sh
-./scripts/build-app.sh        # builds, installs to /Applications and opens it
+```bash
+./scripts/build-app.sh        # builds, installs to Applications and opens it
 ./scripts/build-app.sh dist   # also makes dist/WindowPaneRelief.dmg
 ```
 
-To rebuild, run `./scripts/build-app.sh` again. It quits the running copy, replaces the one in
-Applications and opens the new one. The build is signed only for this Mac, so after a rebuild macOS may treat it as a new app.
-If the pinned window stops showing or clicks stop going through, remove Window Pane Relief from the
-Screen Recording and Accessibility lists in System Settings → Privacy & Security and allow
-it again.
+Run `swift run WindowPin --debug` to see what it's doing.
 
-## If something doesn't work
+</details>
 
-Run with `--debug`. The Terminal output shows:
-
-- `screen recording allowed`. This must be `true`. If you just allowed it, quit and restart
-  the app.
-- `window …` lines listing the windows the app can see. If titles are empty (`""`), Screen
-  Recording permission is missing.
-- Messages when a pin starts, stops, or fails.
-
-If ⌃⌥P does nothing, another app may already use that shortcut. The output then shows
-`couldn't register ⌃⌥P`.
-
-## Known limitations
-
-- The first click on the pinned window is passed on as a plain click. To drag something in
-  it (or the window itself), click once, then drag.
-- When the copy is showing, it's a picture: hovering over it doesn't highlight anything
-  until you click it.
-- Both windows must be on the same desktop. Pinning over an app in full-screen mode doesn't
-  work, because that app is on a desktop of its own. Use a large normal window instead.
-- macOS 15 and later asks every so often whether Window Pane Relief may keep capturing the screen.
-  That's a system prompt for all screen capture apps.
+MIT License
