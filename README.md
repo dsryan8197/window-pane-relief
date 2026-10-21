@@ -4,7 +4,7 @@
 
 **A tiny Mac menu bar app: pin any window on top of everything, and keep working in both.**
 
-<img src="images/demo.gif" alt="Window Pane Relief: a pinned browser window stays on top while text is typed into the app behind it; Control-Option-P pins the window" width="720">
+<img src="images/ad.gif" alt="Window Pane Relief ad: clicking into notes buries a video; press Control-Option-P to pin it, and it stays on top while you type and open other apps; click it to jump back in, pin any window from the menu bar, press Control-Option-P again to unpin" width="720">
 
 ### [⬇️ Download Window Pane Relief](https://github.com/hi-dad/window-pane-relief/releases/latest/download/WindowPaneRelief.dmg)
 Free · macOS 13 or newer · always the latest version

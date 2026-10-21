@@ -1,0 +1,324 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Window Pane Relief ad</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1200px;height:675px;overflow:hidden;background:#000;font-family:-apple-system,"SF Pro Text","Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1200px;height:675px;overflow:hidden;
+  background:radial-gradient(900px 500px at 12% 8%,#e3d4ff 0%,transparent 60%),radial-gradient(700px 500px at 92% 100%,#4b1fa8 0%,transparent 70%),linear-gradient(160deg,#c3a6ff 0%,#8a5cf0 55%,#5b2fd0 100%)}
+.abs{position:absolute}
+#menubar{left:0;top:0;width:100%;height:26px;background:rgba(255,255,255,.3);backdrop-filter:blur(10px);display:flex;align-items:center;padding:0 16px;gap:18px;font-size:13px;color:#1f0f45;font-weight:500;z-index:60}
+#menubar .r{margin-left:auto;display:flex;gap:16px;align-items:center}
+#pinIcon{width:26px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center}
+#dock{left:50%;bottom:10px;transform:translateX(-50%);height:72px;padding:10px 12px;border-radius:22px;background:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(14px);display:flex;gap:10px;align-items:center;z-index:5}
+.dicon{width:52px;height:52px;border-radius:13px;position:relative;box-shadow:0 2px 6px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-size:28px}
+.dicon img{width:52px;height:52px;border-radius:13px}
+.sep{width:1px;height:46px;background:rgba(255,255,255,.6)}
+.dot{position:absolute;bottom:-7px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:2px;background:#1f0f45;opacity:.7}
+#caption{left:50%;top:500px;transform:translateX(-50%);padding:16px 30px;border-radius:18px;background:rgba(22,12,44,.92);color:#fff;font-size:31px;font-weight:700;letter-spacing:-.3px;white-space:nowrap;box-shadow:0 14px 40px rgba(20,0,60,.45),0 0 0 1.5px rgba(184,140,255,.55);z-index:70;display:flex;align-items:center;gap:14px}
+#caption .bullet{width:12px;height:12px;border-radius:6px;background:#b88cff;box-shadow:0 0 12px #b88cff;flex:none}
+#knob{position:absolute;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:8px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+#prog{overflow:visible}
+#pinBadge{width:38px;height:38px;border-radius:19px;background:linear-gradient(#b88cff,#7c4dff);border:2.5px solid #fff;box-shadow:0 4px 14px rgba(80,20,200,.6);align-items:center;justify-content:center;z-index:102}
+.win{background:#fff;border-radius:12px;box-shadow:0 24px 60px rgba(20,0,60,.35),0 0 0 1px rgba(0,0,0,.08);overflow:hidden}
+.bar{height:38px;background:#eef0f5;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid #dde0ea}
+.bar i{width:12px;height:12px;border-radius:6px;display:block}
+.bar .t{margin-left:auto;margin-right:auto;font-size:13px;font-weight:600;color:#333;padding-right:50px}
+.url{margin-left:20px;flex:1;height:22px;border-radius:6px;background:#fff;font-size:12px;color:#6b7383;display:flex;align-items:center;padding-left:10px}
+#notes{background:#fffdf5}
+#notes .side{position:absolute;left:0;top:38px;bottom:0;width:230px;background:#f4f1e6;border-right:1px solid #e6e0cc;padding:16px 12px}
+#notes .side div{height:46px;border-radius:8px;margin-bottom:6px;padding:8px 10px;font-size:12px;color:#555}
+#notes .side div b{display:block;font-size:13px;color:#222;margin-bottom:2px}
+#notes .side .on{background:#ffe58a}
+#notes .body{position:absolute;left:270px;top:70px;right:40px;font-size:22px;line-height:1.75;color:#222;white-space:pre}
+#notes .body .h{font-size:30px;font-weight:800;line-height:1.4}
+.caret{display:inline-block;width:2px;height:26px;background:#e0a100;vertical-align:-5px;margin-left:1px}
+#video{background:#111}
+#video .bar{background:#2a2a2e;border-bottom-color:#111}
+#video .bar .t{color:#eee}
+#screen{position:relative;height:212px;overflow:hidden;background:linear-gradient(180deg,#ffe4c4 0%,#ffd0e0 100%)}
+#paper{position:absolute;left:46px;top:22px;width:288px;height:160px;background:#fffaf2;box-shadow:0 4px 12px rgba(0,0,0,.18);transform:rotate(-2deg)}
+#brush{position:absolute;font-size:34px;transform-origin:20% 90%}
+#prog{position:absolute;left:0;bottom:0;height:4px;width:100%;background:rgba(255,255,255,.35)}
+#prog i{display:block;height:100%;background:#ff3b3b}
+#pp{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:32px;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center}
+#browser .page{padding:24px 30px}
+#browser .lines div{height:11px;border-radius:5px;background:#e6e9ef;margin:12px 0}
+#glow{border-radius:14px;pointer-events:none;z-index:101}
+#menu{left:842px;top:28px;width:318px;padding:6px;border-radius:11px;background:rgba(246,244,250,.96);box-shadow:0 18px 50px rgba(20,0,60,.4),0 0 0 1px rgba(0,0,0,.12);font-size:13.5px;color:#1d1d1f;z-index:65;transform-origin:85% 0}
+#menu .it{height:26px;display:flex;align-items:center;gap:8px;padding:0 10px;border-radius:6px}
+#menu .it span{margin-left:auto;color:#888}
+#menu .it.hi{background:#7c4dff;color:#fff}
+#menu .it.hi span{color:#e9e0ff}
+#menu .hd{font-size:11px;font-weight:700;color:#8a8a8f;padding:6px 10px 2px}
+#menu hr{border:0;height:1px;background:rgba(0,0,0,.1);margin:5px 8px}
+#menu .ai{width:16px;height:16px;border-radius:4px;font-size:11px;display:flex;align-items:center;justify-content:center}
+#keys{display:flex;gap:18px;z-index:80}
+.key{width:104px;height:104px;border-radius:24px;background:linear-gradient(#fdfdfd,#e6e3ee);box-shadow:0 6px 0 #b9b3c9,0 18px 40px rgba(0,0,0,.35);font-size:52px;font-weight:600;color:#1d1433;display:flex;align-items:center;justify-content:center}
+#cursor{width:24px;height:30px;z-index:90}
+#title,#outro{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:120;
+  background:radial-gradient(800px 500px at 50% 35%,#a47bff 0%,#6a3be0 70%,#4a22b0 100%)}
+#title img,#outro img{width:150px;height:150px;filter:drop-shadow(0 18px 30px rgba(0,0,0,.3))}
+.big{font-size:80px;font-weight:800;letter-spacing:-2px;margin-top:14px}
+.tag{font-size:28px;font-weight:500;opacity:.92;margin-top:6px}
+.pill{display:inline-block;margin-top:22px;padding:9px 20px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:18px;font-weight:600}
+</style></head>
+<body>
+<div id="stage">
+  <div id="menubar" class="abs"><b>&#63743;</b><b id="appName">Notes</b><span>File</span><span>Edit</span><span>View</span><span>Window</span>
+    <span class="r"><span id="pinIcon"><svg width="13" height="17" viewBox="0 0 13 17"><path d="M3.2 1h6.6l-.9 5.2 2.6 2.6v1.4H7.3V16l-.8 1-.8-1v-5.8H1.5V8.8l2.6-2.6z" fill="none" stroke="#1f0f45" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M1 4.2a10 10 0 0 1 14 0M3.4 6.7a6.5 6.5 0 0 1 9.2 0M5.8 9.1a3 3 0 0 1 4.4 0" fill="none" stroke="#1f0f45" stroke-width="1.5" stroke-linecap="round"/></svg><svg width="24" height="12" viewBox="0 0 24 12"><rect x=".7" y=".7" width="20" height="10.6" rx="3" fill="none" stroke="#1f0f45" stroke-width="1.2"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1f0f45"/><rect x="22" y="4" width="1.6" height="4" rx=".8" fill="#1f0f45"/></svg><span>Tue 9:41 PM</span></span></div>
+
+  <div id="notes" class="abs win" style="left:30px;top:40px;width:1140px;height:540px">
+    <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+    <div class="side"><div class="on"><b>Lesson notes</b>9:41 PM</div><div><b>Groceries</b>Yesterday</div><div><b>Gift ideas</b>Oct 12</div></div>
+    <div class="body" id="ntext"></div>
+  </div>
+
+  <div id="browser" class="abs win" style="left:300px;top:150px;width:660px;height:410px">
+    <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">art-supplies.example/brushes</div></div>
+    <div class="page">
+      <div style="font-size:26px;font-weight:800;color:#1d2433">Round brushes</div>
+      <div style="display:flex;gap:14px;margin-top:16px">
+        <div style="flex:1;height:130px;border-radius:12px;background:linear-gradient(135deg,#ffd7a8,#ff9f7a);display:flex;align-items:center;justify-content:center;font-size:54px">🖌️</div>
+        <div style="flex:1;height:130px;border-radius:12px;background:linear-gradient(135deg,#c8f0ff,#8fc9ff);display:flex;align-items:center;justify-content:center;font-size:54px">🎨</div>
+        <div style="flex:1;height:130px;border-radius:12px;background:linear-gradient(135deg,#e4d6ff,#b69bff);display:flex;align-items:center;justify-content:center;font-size:54px">🖼️</div>
+      </div>
+      <div class="lines"><div style="width:92%"></div><div style="width:78%"></div><div style="width:85%"></div></div>
+    </div>
+  </div>
+
+  <div id="video" class="abs win" style="left:770px;top:118px;width:380px;height:250px">
+    <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="t">Watercolor Basics · Lesson 3</span></div>
+    <div id="screen">
+      <div id="paper"><svg width="288" height="160" viewBox="0 0 288 160">
+        <path id="wash" d="M20 110 C70 60 120 140 170 90 S250 60 270 100" fill="none" stroke="#6aa8ff" stroke-width="26" stroke-linecap="round" opacity=".75"/>
+        <path id="wash2" d="M30 50 C80 20 150 70 200 35 S260 30 262 45" fill="none" stroke="#ff8fb1" stroke-width="20" stroke-linecap="round" opacity=".7"/>
+        <circle id="sun" cx="225" cy="45" r="18" fill="#ffc64d" opacity="0"/>
+      </svg></div>
+      <div id="brush">🖌️</div>
+      <div id="pp"><svg id="ppPause" width="22" height="26" viewBox="0 0 22 26"><rect x="2" y="1" width="6" height="24" rx="1.5" fill="#fff"/><rect x="14" y="1" width="6" height="24" rx="1.5" fill="#fff"/></svg><svg id="ppPlay" width="24" height="26" viewBox="0 0 24 26"><path d="M4 1l19 12L4 25z" fill="#fff"/></svg></div>
+      <div id="prog"><i id="progFill"></i><div id="knob"></div></div>
+    </div>
+  </div>
+  <div id="glow" class="abs"></div>
+  <div id="pinBadge" class="abs"><svg width="15" height="19" viewBox="0 0 13 17"><path d="M3.2 1h6.6l-.9 5.2 2.6 2.6v1.4H7.3V16l-.8 1-.8-1v-5.8H1.5V8.8l2.6-2.6z" fill="#fff"/></svg></div>
+
+  <div id="menu" class="abs">
+    <div class="it" id="m0">Pin Front Window<span>⌃⌥P</span></div>
+    <hr><div class="hd">Pinned</div>
+    <div class="it" id="m1"><div class="ai" style="background:#ff3b3b;color:#fff">▶</div>Unpin Watercolor Basics · Lesson 3</div>
+    <hr><div class="hd">Pin a Window</div>
+    <div class="it" id="m2"><div class="ai" style="background:#ffd84d">📝</div>Notes — Lesson notes</div>
+    <div class="it" id="m3"><div class="ai" style="background:#e8eef8">🧭</div>Safari — Round brushes</div>
+    <div class="it" id="m4"><div class="ai" style="background:#35c759">💬</div>Messages — Sam</div>
+    <hr><div class="it">Quit Window Pane Relief<span>⌘Q</span></div>
+  </div>
+
+  <div id="dock" class="abs">
+    <div class="dicon" style="background:linear-gradient(#6ec3ff,#1f7ff0)">🙂</div>
+    <div class="dicon" id="dSafari" style="background:linear-gradient(#fff,#e8eef8)">🧭<div class="dot" id="dotSafari"></div></div>
+    <div class="dicon" id="dNotes" style="background:linear-gradient(#fff6c8,#ffd84d)">📝<div class="dot"></div></div>
+    <div class="dicon" id="dVideo" style="background:linear-gradient(#ff6b6b,#e02424);color:#fff;font-size:24px">▶<div class="dot"></div></div>
+    <div class="dicon" style="background:linear-gradient(#6ee27a,#2fbf45)">💬</div>
+    <div class="dicon"><img src="../../images/icon.png"><div class="dot"></div></div>
+    <div class="sep"></div>
+    <div class="dicon" style="background:rgba(255,255,255,.55)">🗑️</div>
+  </div>
+
+  <div id="keys" class="abs"><div class="key">⌃</div><div class="key">⌥</div><div class="key">P</div></div>
+  <div id="caption" class="abs"><span class="bullet"></span><span id="capText"></span></div>
+
+  <svg id="cursor" class="abs" viewBox="0 0 24 30"><path d="M2 2v22l6-6 4 9 4-2-4-8.5h8.5z" fill="#111" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+
+  <div id="title" class="abs"><img src="../../images/icon.png"><div class="big">Window Pane Relief</div><div class="tag">Pin a window. Work in the background.</div></div>
+  <div id="outro" class="abs"><img src="../../images/icon.png"><div class="big">Window Pane Relief</div><div class="tag">Keep the window you need right where you can see it.</div><div class="pill">Free for Mac · github.com/hi-dad/window-pane-relief</div></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const io = (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const out = (x) => 1 - Math.pow(1 - x, 3);
+const back = (x) => { const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, x) => a + (b - a) * x;
+const win = (t, a, b, d = .35) => Math.min(seg(t, a, a + d), 1 - seg(t, b - d, b));
+const css = (el, o) => Object.assign(el.style, o);
+
+const DUR = 32;
+const caps = [
+  [3.0, 5.4, 'Watching a video while you take notes?'],
+  [5.4, 8.6, 'Click into your notes… and the video’s buried.'],
+  [8.6, 12.2, 'Press ⌃⌥P to pin it on top.'],
+  [12.2, 15.6, 'Now keep working. It stays put.'],
+  [15.6, 18.1, 'On top of every app, not just one.'],
+  [18.1, 21.1, 'Click it to use it: pause, scrub, play.'],
+  [21.1, 22.7, 'Then click back and keep typing.'],
+  [22.7, 26.0, 'Or pin any window from the menu bar.'],
+  [26.0, 28.4, 'Done? ⌃⌥P again to unpin.'],
+];
+
+// when each window was last clicked to the front
+const fronts = { notes: [3.0, 4.6, 12.6, 21.25], video: [3.1, 8.0, 18.7, 19.4, 20.65], browser: [15.5] };
+const PIN_ON = 10.4, PIN_OFF = 26.8;
+const PAUSE_A = 18.7, PAUSE_B = 20.65;      // pause click, play click
+const SCRUB_A = 19.45, SCRUB_B = 20.3, SCRUB = 6;  // drag the timeline back 6s
+const clicks = [4.6, 8.0, 12.6, 15.5, PAUSE_A, PAUSE_B, 21.25, 23.2];
+const VX = 770, VY = 118, VW = 380, VH = 250;
+
+// the video's own clock (stops while paused, jumps back while scrubbed)
+function vtime(t) {
+  return t - Math.max(0, Math.min(t, PAUSE_B) - PAUSE_A) - SCRUB * io(seg(t, SCRUB_A, SCRUB_B));
+}
+const knobX = (vt) => VX + VW * (.18 + clamp(vt / 30) * .7);
+const KNOB_Y = VY + VH - 3;
+
+const HEAD = 'Watercolor — Lesson 3\n';
+const typing = [[12.9, 15.2, '• Wet the paper first\n• Light colors before dark'], [21.5, 22.4, '\n• Let each layer dry']];
+
+let C = null;
+function centers() {
+  if (C) return C;
+  const r = (el) => { const b = el.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; };
+  C = { video: r($('dVideo')), safari: r($('dSafari')), pin: r($('pinIcon')) };
+  return C;
+}
+
+function path(t, k) {
+  if (t <= k[0][0]) return [k[0][1], k[0][2]];
+  for (let i = 1; i < k.length; i++) if (t <= k[i][0]) {
+    const x = io(seg(t, k[i - 1][0], k[i][0]));
+    return [lerp(k[i - 1][1], k[i][1], x), lerp(k[i - 1][2], k[i][2], x)];
+  }
+  const l = k[k.length - 1]; return [l[1], l[2]];
+}
+
+function render(t) {
+  const c = centers();
+  // title & outro
+  const O = 28.4;
+  css($('title'), { opacity: 1 - seg(t, 2.6, 3.1), display: t < 3.1 ? 'flex' : 'none' });
+  const ti = back(seg(t, .1, .8));
+  $('title').querySelector('img').style.transform = `scale(${ti}) rotate(${(1 - ti) * -10}deg)`;
+  $('title').querySelector('.big').style.cssText = `opacity:${seg(t, .5, 1)};transform:translateY(${(1 - out(seg(t, .5, 1))) * 20}px)`;
+  $('title').querySelector('.tag').style.cssText = `opacity:${seg(t, .9, 1.4)}`;
+  css($('outro'), { opacity: seg(t, O, O + .6), display: t > O ? 'flex' : 'none' });
+  const oi = back(seg(t, O + .2, O + .9));
+  $('outro').querySelector('img').style.transform = `scale(${oi})`;
+  $('outro').querySelector('.big').style.opacity = seg(t, O + .6, O + 1.1);
+  $('outro').querySelector('.tag').style.opacity = seg(t, O + 1.0, O + 1.5);
+  $('outro').querySelector('.pill').style.cssText = `opacity:${seg(t, O + 1.4, O + 1.9)};transform:translateY(${(1 - out(seg(t, O + 1.4, O + 1.9))) * 14}px)`;
+
+  // caption: lower third, slides up as each one starts
+  const cap = caps.find(([a, b]) => t >= a && t < b);
+  if (cap) {
+    $('capText').textContent = cap[2];
+    const ci = out(seg(t, cap[0], cap[0] + .35));
+    css($('caption'), { opacity: win(t, cap[0], cap[1], .25), display: 'flex', transform: `translateX(-50%) translateY(${(1 - ci) * 18}px) scale(${.96 + .04 * ci})` });
+  } else css($('caption'), { display: 'none' });
+
+  // window stacking: most recently clicked on top; a pinned window floats above everything
+  const last = (k) => fronts[k].filter((x) => x <= t).pop() ?? -1;
+  const pinned = t >= PIN_ON && t < PIN_OFF + .35;   // after unpinning it fades back behind Notes
+  const order = ['notes', 'video', 'browser'].sort((a, b) => last(a) - last(b));
+  order.forEach((k, i) => { $(k).style.zIndex = 10 + i; });
+  if (pinned) $('video').style.zIndex = 50;
+  const frontApp = order[order.length - 1];
+  $('appName').textContent = { notes: 'Notes', video: 'Video Player', browser: 'Safari' }[frontApp];
+
+  // browser opens from the Dock
+  const bw = seg(t, 15.5, 15.9);
+  css($('browser'), { display: t > 15.5 ? 'block' : 'none', opacity: bw, transform: `scale(${.94 + .06 * out(bw)})` });
+  $('dotSafari').style.opacity = t > 15.5 ? .7 : 0;
+
+  // pin glow: a big pulse when pinning, then a steady purple ring the whole time it's pinned
+  const pulse = Math.sin(seg(t, PIN_ON, PIN_ON + 1.2) * Math.PI);
+  const hold = seg(t, PIN_ON, PIN_ON + .3) * (1 - seg(t, PIN_OFF, PIN_OFF + .2));
+  const breathe = .85 + .15 * Math.sin(t * 3);
+  const ring = 4 * hold + 6 * pulse, blur = 34 * hold * breathe + 90 * pulse, spread = 6 * hold + 26 * pulse;
+  css($('glow'), { left: VX - 2 + 'px', top: VY - 2 + 'px', width: VW + 4 + 'px', height: VH + 4 + 'px',
+    boxShadow: `0 0 0 ${ring}px #b88cff, 0 0 ${blur}px ${spread}px rgba(150,90,255,${Math.min(.95, .7 * hold + .9 * pulse)})`, opacity: hold + pulse > .01 ? 1 : 0 });
+  const bd = back(seg(t, PIN_ON + .1, PIN_ON + .45)) * (1 - seg(t, PIN_OFF, PIN_OFF + .3));
+  css($('pinBadge'), { left: VX + VW - 22 + 'px', top: VY - 16 + 'px', opacity: Math.min(1, bd), transform: `scale(${bd}) rotate(${(1 - Math.min(1, bd)) * -40}deg)`, display: bd > .01 ? 'flex' : 'none' });
+  const vpop = Math.sin(seg(t, PIN_ON, PIN_ON + .4) * Math.PI) * .04;
+  const drop = seg(t, PIN_OFF + .1, PIN_OFF + .35);
+  css($('video'), { transform: `scale(${1 + vpop - .03 * drop})`, opacity: t > PIN_OFF + .35 ? 1 : 1 - drop });
+  // menu bar pin icon highlights while pinning / menu open
+  const menuOpen = t > 23.2 && t < 25.7;
+  const pinFlash = Math.max(Math.sin(seg(t, PIN_ON, PIN_ON + .8) * Math.PI), Math.sin(seg(t, PIN_OFF, PIN_OFF + .8) * Math.PI), menuOpen ? 1 : 0);
+  $('pinIcon').style.background = `rgba(31,15,69,${.18 * pinFlash})`;
+
+  // the video plays
+  const vt = vtime(t);
+  $('progFill').style.width = (knobX(vt) - VX) / VW * 100 + '%';
+  const draw = (id, a, b) => { const p = $(id), L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L * (1 - seg(vt, a, b)); };
+  draw('wash2', 1, 9); draw('wash', 9, 19);
+  $('sun').setAttribute('opacity', seg(vt, 19, 21) * .9);
+  const bp = vt < 9 ? $('wash2') : $('wash'), bl = bp.getTotalLength();
+  const bf = vt < 9 ? seg(vt, 1, 9) : seg(vt, 9, 19);
+  const pt = bp.getPointAtLength(bl * bf);
+  css($('brush'), { left: 46 + pt.x - 6 + 'px', top: 22 + pt.y - 34 + 'px', transform: `rotate(${Math.sin(vt * 6) * 8}deg)` });
+  const paused = t >= PAUSE_A && t < PAUSE_B;
+  css($('pp'), { opacity: paused ? 1 : t >= PAUSE_B ? 1 - seg(t, PAUSE_B + .1, PAUSE_B + .5) : 0 });
+  $('ppPause').style.display = paused ? 'none' : 'block';
+  $('ppPlay').style.display = paused ? 'block' : 'none';
+  // the timeline thickens and shows a knob while the cursor is on it
+  const scrubUI = seg(t, 19.1, 19.35) * (1 - seg(t, 20.4, 20.6));
+  $('prog').style.height = 4 + 4 * scrubUI + 'px';
+  css($('knob'), { left: (knobX(vt) - VX) - 8 + 'px', opacity: scrubUI, transform: `scale(${.5 + .5 * scrubUI + (t > SCRUB_A - .05 && t < SCRUB_B + .05 ? .25 : 0)})` });
+
+  // typing in Notes
+  let typed = HEAD;
+  for (const [a, b, s] of typing) if (t >= a) typed += s.slice(0, Math.round(s.length * seg(t, a, b)));
+  const lines = typed.split('\n');
+  const isTyping = typing.some(([a, b]) => t > a && t < b);
+  const showCaret = t > 12.6 && (isTyping || Math.floor(t * 2.5) % 2 === 0) && frontApp === 'notes';
+  $('ntext').innerHTML = lines.map((l, i) => (i === 0 ? `<span class="h">${l}</span>` : l)).join('\n') + (showCaret ? '<span class="caret"></span>' : '');
+
+  // the menu
+  const mv = back(seg(t, 23.2, 23.4)) * (1 - seg(t, 25.55, 25.75));
+  css($('menu'), { display: mv > .01 ? 'block' : 'none', opacity: Math.min(1, mv * 1.4), transform: `scale(${.92 + .08 * Math.min(1, mv)})` });
+  const hov = t < 23.9 ? -1 : t < 24.3 ? 0 : t < 24.7 ? 1 : t < 25.05 ? 2 : t < 25.35 ? 3 : 4;
+  for (let i = 0; i <= 4; i++) $('m' + i).classList.toggle('hi', i === hov);
+
+  // keycaps
+  const keyShow = (a, p) => ({ on: win(t, a, p + .9, .2), pop: back(seg(t, a, a + .3)), pressed: t > p && t < p + .22 });
+  const k = t < 17 ? keyShow(9.4, PIN_ON) : keyShow(26.1, PIN_OFF);
+  css($('keys'), { left: 240 + 'px', top: 290 + 'px', opacity: k.on, display: k.on > 0 ? 'flex' : 'none', transform: `scale(${k.pop})` });
+  [...$('keys').children].forEach((el) => { el.style.transform = k.pressed ? 'translateY(5px) scale(.94)' : ''; el.style.boxShadow = k.pressed ? '0 1px 0 #b9b3c9,0 8px 20px rgba(0,0,0,.3)' : ''; });
+
+  // cursor
+  const vc = [VX + VW / 2, VY + 38 + 106];
+  const k0 = [knobX(vtime(19.3)), KNOB_Y], k1 = [knobX(vtime(SCRUB_B)), KNOB_Y];
+  const mi = (i) => { const r = $('m' + i); return [r.offsetLeft + 842 + 120, r.offsetTop + 28 + 13]; };
+  let cp = path(t, [[3.4, 640, 430], [4.0, 640, 430], [4.6, 330, 330], [7.2, 330, 330], [8.0, c.video[0], c.video[1]], [8.8, c.video[0], c.video[1]], [9.3, 1040, 440],
+    [12.0, 1040, 440], [12.6, 470, 300], [15.0, 700, 420], [15.5, c.safari[0], c.safari[1]], [17.6, c.safari[0], c.safari[1]],
+    [18.6, ...vc], [18.8, ...vc], [19.3, ...k0], [SCRUB_A, ...k0], [SCRUB_B, ...k1], [20.4, ...k1], [PAUSE_B - .05, ...vc], [20.7, ...vc], [21.25, 470, 320], [22.5, 520, 330],
+    [23.2, c.pin[0], c.pin[1]], [23.9, ...mi(0)], [24.3, ...mi(1)], [24.7, ...mi(2)], [25.05, ...mi(3)], [25.35, ...mi(4)], [25.8, 1060, 440],
+    [29, 1060, 440]]);
+  if (t > SCRUB_A && t < SCRUB_B) cp = [knobX(vt), KNOB_Y];   // the cursor holds the knob while dragging
+  const clickDip = clicks.some((x) => t > x - .02 && t < x + .12) || (t > SCRUB_A && t < SCRUB_B);
+  css($('cursor'), { left: cp[0] - 3 + 'px', top: cp[1] - 3 + 'px', opacity: t > 3.3 && t < O ? 1 : 0, transform: clickDip ? 'scale(.85)' : '' });
+  const vb = Math.sin(seg(t, 8.0, 8.35) * Math.PI) * .18;
+  $('dVideo').style.transform = `scale(${1 + vb}) translateY(${-vb * 40}px)`;
+  const sb = Math.sin(seg(t, 15.5, 15.85) * Math.PI) * .18;
+  $('dSafari').style.transform = `scale(${1 + sb}) translateY(${-sb * 40}px)`;
+}
+
+// ?stamp shows the time in the corner, for reviewing
+if (location.search.includes('stamp')) {
+  const st = document.createElement('div');
+  st.style.cssText = 'position:absolute;right:12px;bottom:12px;z-index:999;padding:5px 10px;border-radius:8px;background:rgba(0,0,0,.7);color:#fff;font:600 20px Menlo,monospace';
+  document.getElementById('stage').appendChild(st);
+  const r0 = render;
+  render = (t) => { r0(t); st.textContent = '0:' + String(Math.floor(t)).padStart(2, '0') + '.' + Math.floor((t % 1) * 10); };
+}
+window.renderAt = (t) => render(t);
+document.body.dataset.ready = '1';
+if (!location.search.includes('capture')) {
+  const s = performance.now();
+  const loop = () => { render(((performance.now() - s) / 1000) % DUR); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+}
+</script>
+</body></html>
