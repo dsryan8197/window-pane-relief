@@ -27,7 +27,10 @@ cp Resources/Info.plist "$APP/Contents/Info.plist"
 cp AppIcon.icns "$APP/Contents/Resources/"
 # Sign with the same local certificate every time so macOS keeps Screen Recording and Accessibility
 # across rebuilds. (Falls back to ad-hoc signing on a Mac without it; then they must be re-granted.)
-if security find-certificate -c "Daniel Ryan Local Signing" >/dev/null 2>&1; then
+# GitHub's release builds sign with Developer ID + hardened runtime + timestamp, as Apple's notarization needs.
+if [[ -n "${SIGN_IDENTITY:-}" ]]; then
+    codesign --force --sign "$SIGN_IDENTITY" --options runtime --timestamp "$APP"
+elif security find-certificate -c "Daniel Ryan Local Signing" >/dev/null 2>&1; then
     codesign --force --sign "Daniel Ryan Local Signing" "$APP"
 else
     codesign --force --sign - "$APP"
