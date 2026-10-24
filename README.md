@@ -9,15 +9,10 @@
 ### [⬇️ Download Window Pane Relief](https://github.com/hi-dad/window-pane-relief/releases/latest/download/WindowPaneRelief.dmg)
 Free · macOS 13 or newer · always the latest version
 
-⚠️ **The first time you open it, macOS blocks it.** That's normal for free apps outside the App Store. [See step 2 below](#install) for the one click that lets it open.
-
 ## Install
 
 1. Open **WindowPaneRelief.dmg** and drag the app into **Applications**.
-2. Open it. When macOS says it can't verify the app, click **Done**, then go to **System Settings → Privacy & Security** and click **Open Anyway** (once).
-
-   <img src="images/open-anyway.png" alt="System Settings, Privacy and Security: the line saying Window Pane Relief was blocked to protect your Mac, with the Open Anyway button next to it" width="600">
-
+2. Open it, and click **Open** when macOS asks if you're sure. (It's signed and checked by Apple.)
 3. Allow **Screen Recording** and **Accessibility** when asked, then quit and reopen it.
 
 ## How to use it
